@@ -4,20 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteX="-26dp"
+    tools:layout_editor_absoluteY="2dp">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:text="Appuyer sur &quot;SCANNER&quot; pour faire l'appel"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.42" />
+
+    <EditText
+        android:id="@+id/url_target_text_field"
+        android:layout_width="357dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="112dp"
+        android:ems="10"
+        android:hint="Tableau cible"
+        android:inputType="textUri"
+        android:minHeight="48dp"
+        android:text="https://script.google.com/macros/s/AKfycbxxWpb4M4bCJWI6biojmO3p68G5mRPoAP0zutMZMnF2SVnnOA_2/exec"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/scan_btn"
@@ -29,6 +46,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.227" />
+        app:layout_constraintVertical_bias="0.147" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="243dp"
+        android:layout_height="37dp"
+        android:text="Lien du tableau cible"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/url_target_text_field"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

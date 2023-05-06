@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -23,35 +24,35 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity {
 
-    String scannedData;
-
-
+    String scannedData, urlTarget;
     Button scanBtn;
+    TextView urlTargetTextField;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Activity activity =this;
-        scanBtn = (Button)findViewById(R.id.scan_btn);
+        final Activity activity = this;
+        scanBtn = findViewById(R.id.scan_btn);
 
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Scan");
+                integrator.setPrompt("Lecture en cours");
                 integrator.setBeepEnabled(false);
                 integrator.setCameraId(0);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
             }
         });
-
 
     }
 
@@ -63,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
             if (scannedData != null) {
                 // Here we need to handle scanned data...
                 new SendRequest().execute();
-
-
-            }else {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -81,9 +79,10 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... arg0) {
 
             try{
-
-                //Enter script URL Here
-                URL url = new URL("https://script.google.com/macros/s/AKfycbxxWpb4M4bCJWI6biojmO3p68G5mRPoAP0zutMZMnF2SVnnOA_2/exec");
+                // Get URL
+                urlTargetTextField = findViewById(R.id.url_target_text_field);
+                urlTarget = String.valueOf(urlTargetTextField.getText());
+                URL url = new URL(urlTarget);
 
                 JSONObject postDataParams = new JSONObject();
 
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
+                        new OutputStreamWriter(os, StandardCharsets.UTF_8));
                 writer.write(getPostDataString(postDataParams));
 
                 writer.flush();
@@ -122,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
                     BufferedReader in=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     StringBuffer sb = new StringBuffer("");
-                    String line="";
+                    String line = "";
 
                     while((line = in.readLine()) != null) {
 
@@ -135,11 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else {
-                    return new String("false : "+responseCode);
+                    return "false : "+responseCode;
                 }
             }
             catch(Exception e){
-                return new String("Exception: " + e.getMessage());
+                return "Exception: " + e.getMessage();
             }
         }
 
